@@ -124,7 +124,7 @@
         </div>
 
         <p class="text-center text-xs text-gray-500 mt-8">
-            <i class="fa-solid fa-lock text-[#F43F5E] mr-1"></i> Sealed until September 10th at 12:00 AM
+            <i class="fa-solid fa-lock text-[#F43F5E] mr-1"></i> Sealed until Friday, September 11th at 12:00 AM
         </p>
     </div>
 
@@ -178,7 +178,7 @@
             <h3 class="text-2xl font-bold text-gray-900 mb-2 playfair">Sealed with Love!</h3>
             <p class="text-sm text-gray-600 mb-4">
                 This letter is strictly locked until <br>
-                <span class="font-semibold text-[#E11D48]" id="unlock-date-str">September 10 at 12:00 AM</span>.
+                <span class="font-semibold text-[#E11D48]" id="unlock-date-str">Friday, September 11 at 12:00 AM</span>.
             </p>
             
             <!-- Live Countdown Box inside modal -->
@@ -208,8 +208,8 @@
          * ==========================================
          */
         
-        // Default unlock time: September 10, 2026 at 12:00:00 AM
-        const DEFAULT_UNLOCK_DATE = "2026-09-10T00:00:00";
+        // Default unlock time: Friday, September 11, 2026 at 12:00:00 AM
+        const DEFAULT_UNLOCK_DATE = "2026-09-11T00:00:00";
 
         /*
          * YOUR LETTERS LIST:
@@ -315,7 +315,7 @@
                     <div>
                         ${isLocked ? 
                             `<span class="inline-flex items-center px-3 py-1 bg-[#FFF0F3] text-[#F43F5E] rounded-full text-xs font-semibold border border-[#FFE4E6] space-x-1">
-                                <i class="fa-solid fa-lock text-xs"></i> <span>Sept 10</span>
+                                <i class="fa-solid fa-lock text-xs"></i> <span>Sept 11</span>
                              </span>` : 
                             `<div class="w-9 h-9 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center group-hover:bg-[#F43F5E] group-hover:text-white transition-colors">
                                 <i class="fa-solid fa-chevron-right text-sm"></i>
