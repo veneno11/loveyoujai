@@ -102,9 +102,9 @@
         
         <!-- Header -->
         <div class="text-center relative z-10 mb-8">
-            <!-- Top Circle Photo / Icon: Place an image named 'us.jpg' in your folder -->
+            <!-- Top Circle Photo / Icon: Place an image named 'us.jpg' or 'us.png' in your folder -->
             <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-[#FFF0F3] mb-4 text-[#F43F5E] text-3xl border-2 border-[#FFE4E6] shadow-sm overflow-hidden relative">
-                <img id="header-avatar" src="us.jpg" alt="Us" class="w-full h-full object-cover rounded-full" onerror="this.classList.add('hidden'); document.getElementById('header-icon').classList.remove('hidden');">
+                <img id="header-avatar" src="us.jpg" alt="Us" class="w-full h-full object-cover rounded-full" onerror="handleAvatarError(this)">
                 <div id="header-icon" class="hidden">
                     <i class="fa-solid fa-envelope-open-heart"></i>
                 </div>
@@ -267,6 +267,21 @@
          * ==========================================
          */
         let countdownInterval = null;
+
+        // Try us.jpg -> us.png -> us.jpeg -> us.PNG -> icon fallback
+        function handleAvatarError(imgEl) {
+            const currentSrc = imgEl.src;
+            if (currentSrc.endsWith('us.jpg')) {
+                imgEl.src = 'us.png';
+            } else if (currentSrc.endsWith('us.png')) {
+                imgEl.src = 'us.jpeg';
+            } else if (currentSrc.endsWith('us.jpeg')) {
+                imgEl.src = 'us.PNG';
+            } else {
+                imgEl.classList.add('hidden');
+                document.getElementById('header-icon').classList.remove('hidden');
+            }
+        }
 
         function handleImageError(imgEl) {
             imgEl.onerror = null;
