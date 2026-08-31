@@ -12,16 +12,12 @@
     
     <!-- Favicon: Cute heart emoji icon for browser tabs -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>">
-    
-    <!-- If you want to use a custom picture file as your favicon, uncomment the line below and upload favicon.png to GitHub: -->
-    <!-- <link rel="icon" type="image/png" href="favicon.png"> -->
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
-        // Define error handlers in <head> so inline img onerror attributes find them immediately
         let avatarAttemptIndex = 0;
         const avatarFormats = ['us.jpg', 'us.png', 'us.JPG', 'us.PNG', 'us.jpeg', 'us.JPEG'];
 
@@ -53,6 +49,10 @@
 
         .cursive {
             font-family: 'Great Vibes', cursive;
+        }
+
+        .handwritten {
+            font-family: 'Caveat', cursive;
         }
         
         h1, h2, .playfair {
@@ -161,13 +161,19 @@
             </p>
         </div>
 
+        <!-- Dynamic Live Countdown Banner for Next Unlock -->
+        <div id="next-unlock-banner" class="bg-[#FFF0F3] border border-[#FFE4E6] rounded-2xl p-4 mb-6 text-center">
+            <span id="next-unlock-text" class="text-xs font-semibold uppercase tracking-wider text-[#F43F5E] block mb-1">Next letter unlocks in</span>
+            <span id="next-unlock-timer" class="font-mono text-xl font-bold text-[#BE123C]">Loading schedule...</span>
+        </div>
+
         <!-- Buttons Container -->
         <div id="buttons-container" class="space-y-4 relative z-10">
             <!-- Dynamically populated buttons -->
         </div>
 
         <p class="text-center text-xs text-gray-500 mt-8">
-            <i class="fa-solid fa-lock text-[#F43F5E] mr-1"></i> First letter unlocks Friday, September 11th at 12:00 AM
+            <i class="fa-solid fa-lock text-[#F43F5E] mr-1"></i> Letters unlock sequentially starting Friday, Sept 11, 2026 at 12:00 AM
         </p>
     </div>
 
@@ -220,8 +226,8 @@
     </div>
 
     <!-- LOCKED MODAL POPUP -->
-    <div id="locked-modal" class="hidden-view fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50 fade-in">
-        <div class="solid-card bg-[#FFFDF9] max-w-md w-full rounded-3xl p-6 sm:p-8 text-center relative border border-[#FECDD3] shadow-xl">
+    <div id="locked-modal" class="hidden-view fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 fade-in">
+        <div class="solid-card bg-[#FFFDF9] max-w-md w-full rounded-3xl p-6 sm:p-8 text-center relative border border-[#FECDD3] shadow-2xl">
             <div class="w-16 h-16 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center text-2xl mx-auto mb-4 border border-[#FFE4E6]">
                 <i class="fa-solid fa-lock"></i>
             </div>
@@ -245,11 +251,15 @@
         </div>
     </div>
 
-    <!-- Footer by Leo Villeda -->
-    <footer class="mt-auto pt-8 pb-2 relative z-10 text-center w-full">
-        <p class="text-gray-500 text-sm font-medium tracking-wide">
+    <!-- Footer by Leo Villeda with optional preview mode toggle -->
+    <footer class="mt-auto pt-8 pb-4 relative z-10 text-center w-full">
+        <p class="text-gray-500 text-sm font-medium tracking-wide mb-2">
             Made with <i class="fa-solid fa-heart text-[#F43F5E] mx-1 animate-pulse"></i> by leo villeda
         </p>
+        <div class="inline-flex items-center space-x-2 text-xs text-gray-400 bg-white/70 px-3 py-1 rounded-full border border-gray-200">
+            <input type="checkbox" id="demo-mode-toggle" class="rounded text-[#F43F5E] focus:ring-[#F43F5E] cursor-pointer" onchange="toggleDemoMode(this.checked)">
+            <label for="demo-mode-toggle" class="cursor-pointer select-none">Unlock All Letters (Testing Mode)</label>
+        </div>
     </footer>
 
     <script>
@@ -259,8 +269,12 @@
          */
         
         /*
-         * YOUR LETTERS LIST:
-         * Staggered unlock dates: Unlocks one day after another starting Friday, Sept 11, 2026!
+         * LETTERS LIST:
+         * Staggered unlock dates starting Friday, September 11, 2026 at 12:00 AM midnight:
+         * 1. Friday, Sept 11, 2026 @ 12:00 AM
+         * 2. Saturday, Sept 12, 2026 @ 12:00 AM
+         * 3. Sunday, Sept 13, 2026 @ 12:00 AM
+         * 4. Monday, Sept 14, 2026 @ 12:00 AM
          */
         const lettersData = [
             {
@@ -270,7 +284,7 @@
                 icon: "fa-heart",
                 iconColor: "text-[#F43F5E]",
                 bgColor: "bg-[#FFF0F3]",
-                unlockDate: "2020-01-01T00:00:00", // CHANGED TO PAST DATE FOR TESTING
+                unlockDate: "2026-09-11T00:00:00", // Friday, Sept 11, 2026 @ 12:00 AM
                 badgeText: "Sept 11",
                 image: "missme.jpg",
                 audio: "missme.m4a",
@@ -283,7 +297,7 @@
                 icon: "fa-sun",
                 iconColor: "text-[#FB923C]",
                 bgColor: "bg-[#FFF7ED]",
-                unlockDate: "2020-01-01T00:00:00", // CHANGED TO PAST DATE FOR TESTING
+                unlockDate: "2026-09-12T00:00:00", // Saturday, Sept 12, 2026 @ 12:00 AM
                 badgeText: "Sept 12",
                 image: "waking-up.jpg",
                 audio: "waking-up.m4a",
@@ -296,7 +310,7 @@
                 icon: "fa-cloud-rain",
                 iconColor: "text-[#F472B6]",
                 bgColor: "bg-[#FDF2F8]",
-                unlockDate: "2020-01-01T00:00:00", // CHANGED TO PAST DATE FOR TESTING
+                unlockDate: "2026-09-13T00:00:00", // Sunday, Sept 13, 2026 @ 12:00 AM
                 badgeText: "Sept 13",
                 image: "hard-day.jpg",
                 audio: "hard-day.m4a",
@@ -309,7 +323,7 @@
                 icon: "fa-moon",
                 iconColor: "text-[#E11D48]",
                 bgColor: "bg-[#FFF0F3]",
-                unlockDate: "2020-01-01T00:00:00", // CHANGED TO PAST DATE FOR TESTING
+                unlockDate: "2026-09-14T00:00:00", // Monday, Sept 14, 2026 @ 12:00 AM
                 badgeText: "Sept 14",
                 image: "going-to-sleep.jpg",
                 audio: "going-to-sleep.m4a",
@@ -318,10 +332,18 @@
         ];
 
         /* * ==========================================
-         * APPLICATION LOGIC
+         * APPLICATION STATE & LOGIC
          * ==========================================
          */
         let countdownInterval = null;
+        let bannerTimerInterval = null;
+        let isDemoMode = false;
+
+        function toggleDemoMode(enabled) {
+            isDemoMode = enabled;
+            renderButtons();
+            updateBannerTimer();
+        }
 
         function renderButtons() {
             const container = document.getElementById('buttons-container');
@@ -331,7 +353,7 @@
 
             lettersData.forEach(letter => {
                 const targetTime = new Date(letter.unlockDate);
-                const isLocked = now < targetTime;
+                const isLocked = !isDemoMode && (now < targetTime);
 
                 const btn = document.createElement('button');
                 btn.className = `hover-lift flex items-center justify-between w-full p-5 bg-[#FFFDF9] rounded-2xl border border-[#FFE4E6] group cursor-pointer text-left shadow-sm hover:border-[#FBCFE8] transition-all`;
@@ -350,7 +372,7 @@
                     <div>
                         ${isLocked ? 
                             `<span class="inline-flex items-center px-3 py-1 bg-[#FFF0F3] text-[#F43F5E] rounded-full text-xs font-semibold border border-[#FFE4E6] space-x-1">
-                                <i class="fa-solid fa-lock text-xs"></i> <span>${letter.badgeText}</span>
+                                <i class="fa-solid fa-lock text-xs mr-1"></i> <span>${letter.badgeText}</span>
                              </span>` : 
                             `<div class="w-9 h-9 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center group-hover:bg-[#F43F5E] group-hover:text-white transition-colors">
                                 <i class="fa-solid fa-chevron-right text-sm"></i>
@@ -361,13 +383,64 @@
 
                 container.appendChild(btn);
             });
+
+            updateBannerTimer();
+        }
+
+        function updateBannerTimer() {
+            if (bannerTimerInterval) clearInterval(bannerTimerInterval);
+
+            const bannerEl = document.getElementById('next-unlock-banner');
+            const timerEl = document.getElementById('next-unlock-timer');
+            const textEl = document.getElementById('next-unlock-text');
+
+            if (isDemoMode) {
+                bannerEl.classList.add('hidden-view');
+                return;
+            }
+
+            const now = new Date();
+            // Find the next upcoming locked letter
+            const nextLocked = lettersData.find(l => new Date(l.unlockDate) > now);
+
+            if (!nextLocked) {
+                textEl.textContent = "All Letters Unlocked! 💕";
+                timerEl.textContent = "Enjoy every note anytime";
+                bannerEl.classList.remove('hidden-view');
+                return;
+            }
+
+            bannerEl.classList.remove('hidden-view');
+            textEl.textContent = `Next letter unlocks on ${nextLocked.badgeText} in`;
+
+            function tickBanner() {
+                const current = new Date();
+                const target = new Date(nextLocked.unlockDate);
+                const diff = target - current;
+
+                if (diff <= 0) {
+                    clearInterval(bannerTimerInterval);
+                    renderButtons();
+                    return;
+                }
+
+                const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const m = Math.floor((diff / (1000 * 60)) % 60);
+                const s = Math.floor((diff / 1000) % 60);
+
+                timerEl.textContent = `${d}d ${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m ${s.toString().padStart(2, '0')}s`;
+            }
+
+            tickBanner();
+            bannerTimerInterval = setInterval(tickBanner, 1000);
         }
 
         function handleButtonClick(letter) {
             const now = new Date();
             const targetTime = new Date(letter.unlockDate);
 
-            if (now < targetTime) {
+            if (!isDemoMode && (now < targetTime)) {
                 showLockedModal(targetTime);
             } else {
                 openLetter(letter);
@@ -438,6 +511,7 @@
 
             menuView.classList.add('hidden-view');
             letterView.classList.remove('hidden-view');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function closeLetter() {
@@ -447,8 +521,10 @@
 
             document.getElementById('letter-view').classList.add('hidden-view');
             document.getElementById('menu-view').classList.remove('hidden-view');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Initialize application buttons on page load
         renderButtons();
     </script>
 </body>
