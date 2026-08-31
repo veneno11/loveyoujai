@@ -32,6 +32,15 @@
             box-shadow: 0 12px 32px rgba(239, 68, 68, 0.08);
         }
 
+        /* High-quality GPU image smoothing to prevent moiré/glitching on striped clothing */
+        #header-avatar {
+            image-rendering: high-quality;
+            image-rendering: -webkit-optimize-contrast;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform;
+        }
+
         .hover-lift {
             transition: all 0.25s ease-in-out;
         }
@@ -102,9 +111,9 @@
         
         <!-- Header -->
         <div class="text-center relative z-10 mb-8">
-            <!-- Top Circle Photo / Icon: Place an image named 'us.png' or 'us.jpg' in your folder -->
-            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-[#FFF0F3] mb-4 text-[#F43F5E] text-3xl border-2 border-[#FFE4E6] shadow-sm overflow-hidden relative">
-                <img id="header-avatar" src="us.png" alt="Us" class="w-full h-full object-cover rounded-full" onerror="handleAvatarError(this)">
+            <!-- Top Circle Photo / Icon: Made larger to prevent stripe distortion -->
+            <div class="inline-flex items-center justify-center w-36 h-36 sm:w-40 sm:h-40 rounded-full bg-[#FFF0F3] mb-4 text-[#F43F5E] text-4xl border-4 border-[#FFE4E6] shadow-md overflow-hidden relative group">
+                <img id="header-avatar" src="us.jpg" alt="Us" class="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform duration-300" onerror="handleAvatarError(this)">
                 <div id="header-icon" class="hidden">
                     <i class="fa-solid fa-envelope-open-heart"></i>
                 </div>
@@ -269,9 +278,9 @@
          */
         let countdownInterval = null;
 
-        // Auto-detect avatar format: seamlessly checks us.png -> us.jpg -> us.PNG -> us.JPG -> us.jpeg -> icon fallback
+        // Auto-detect avatar format: seamlessly checks us.jpg -> us.png -> us.JPG -> us.PNG -> us.jpeg -> icon fallback
         let avatarAttemptIndex = 0;
-        const avatarFormats = ['us.png', 'us.jpg', 'us.PNG', 'us.JPG', 'us.jpeg', 'us.JPEG'];
+        const avatarFormats = ['us.jpg', 'us.png', 'us.JPG', 'us.PNG', 'us.jpeg', 'us.JPEG'];
 
         function handleAvatarError(imgEl) {
             avatarAttemptIndex++;
