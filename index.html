@@ -102,9 +102,9 @@
         
         <!-- Header -->
         <div class="text-center relative z-10 mb-8">
-            <!-- Top Circle Photo / Icon: Place an image named 'us.jpg' or 'us.png' in your folder -->
+            <!-- Top Circle Photo / Icon: Place an image named 'us.png' or 'us.jpg' in your folder -->
             <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-[#FFF0F3] mb-4 text-[#F43F5E] text-3xl border-2 border-[#FFE4E6] shadow-sm overflow-hidden relative">
-                <img id="header-avatar" src="us.jpg" alt="Us" class="w-full h-full object-cover rounded-full" onerror="handleAvatarError(this)">
+                <img id="header-avatar" src="us.png" alt="Us" class="w-full h-full object-cover rounded-full" onerror="handleAvatarError(this)">
                 <div id="header-icon" class="hidden">
                     <i class="fa-solid fa-envelope-open-heart"></i>
                 </div>
@@ -124,7 +124,7 @@
         </div>
 
         <p class="text-center text-xs text-gray-500 mt-8">
-            <i class="fa-solid fa-lock text-[#F43F5E] mr-1"></i> Sealed until Friday, September 11th at 12:00 AM
+            <i class="fa-solid fa-lock text-[#F43F5E] mr-1"></i> First letter unlocks Friday, September 11th at 12:00 AM
         </p>
     </div>
 
@@ -208,12 +208,9 @@
          * ==========================================
          */
         
-        // Default unlock time: Friday, September 11, 2026 at 12:00:00 AM
-        const DEFAULT_UNLOCK_DATE = "2026-09-11T00:00:00";
-
         /*
          * YOUR LETTERS LIST:
-         * Ensure image and audio filenames match your files in GitHub!
+         * Staggered unlock dates: Unlocks one day after another starting Friday, Sept 11, 2026!
          */
         const lettersData = [
             {
@@ -223,7 +220,8 @@
                 icon: "fa-heart",
                 iconColor: "text-[#F43F5E]",
                 bgColor: "bg-[#FFF0F3]",
-                unlockDate: DEFAULT_UNLOCK_DATE,
+                unlockDate: "2026-09-11T00:00:00", // Friday, Sept 11
+                badgeText: "Sept 11",
                 image: "WIN_20260830_21_49_32_Scan.jpg",
                 audio: "jai letter-miss me.m4a"
             },
@@ -234,7 +232,8 @@
                 icon: "fa-sun",
                 iconColor: "text-[#FB923C]",
                 bgColor: "bg-[#FFF7ED]",
-                unlockDate: DEFAULT_UNLOCK_DATE,
+                unlockDate: "2026-09-12T00:00:00", // Saturday, Sept 12
+                badgeText: "Sept 12",
                 image: "waking-up.jpg",
                 audio: "waking-up.m4a"
             },
@@ -245,7 +244,8 @@
                 icon: "fa-cloud-rain",
                 iconColor: "text-[#F472B6]",
                 bgColor: "bg-[#FDF2F8]",
-                unlockDate: DEFAULT_UNLOCK_DATE,
+                unlockDate: "2026-09-13T00:00:00", // Sunday, Sept 13
+                badgeText: "Sept 13",
                 image: "hard-day.jpg",
                 audio: "hard-day.m4a"
             },
@@ -256,7 +256,8 @@
                 icon: "fa-moon",
                 iconColor: "text-[#E11D48]",
                 bgColor: "bg-[#FFF0F3]",
-                unlockDate: DEFAULT_UNLOCK_DATE,
+                unlockDate: "2026-09-14T00:00:00", // Monday, Sept 14
+                badgeText: "Sept 14",
                 image: "going-to-sleep.jpg",
                 audio: "going-to-sleep.m4a"
             }
@@ -268,15 +269,14 @@
          */
         let countdownInterval = null;
 
-        // Try us.jpg -> us.png -> us.jpeg -> us.PNG -> icon fallback
+        // Auto-detect avatar format: seamlessly checks us.png -> us.jpg -> us.PNG -> us.JPG -> us.jpeg -> icon fallback
+        let avatarAttemptIndex = 0;
+        const avatarFormats = ['us.png', 'us.jpg', 'us.PNG', 'us.JPG', 'us.jpeg', 'us.JPEG'];
+
         function handleAvatarError(imgEl) {
-            const currentSrc = imgEl.src;
-            if (currentSrc.endsWith('us.jpg')) {
-                imgEl.src = 'us.png';
-            } else if (currentSrc.endsWith('us.png')) {
-                imgEl.src = 'us.jpeg';
-            } else if (currentSrc.endsWith('us.jpeg')) {
-                imgEl.src = 'us.PNG';
+            avatarAttemptIndex++;
+            if (avatarAttemptIndex < avatarFormats.length) {
+                imgEl.src = avatarFormats[avatarAttemptIndex];
             } else {
                 imgEl.classList.add('hidden');
                 document.getElementById('header-icon').classList.remove('hidden');
@@ -315,7 +315,7 @@
                     <div>
                         ${isLocked ? 
                             `<span class="inline-flex items-center px-3 py-1 bg-[#FFF0F3] text-[#F43F5E] rounded-full text-xs font-semibold border border-[#FFE4E6] space-x-1">
-                                <i class="fa-solid fa-lock text-xs"></i> <span>Sept 11</span>
+                                <i class="fa-solid fa-lock text-xs"></i> <span>${letter.badgeText}</span>
                              </span>` : 
                             `<div class="w-9 h-9 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center group-hover:bg-[#F43F5E] group-hover:text-white transition-colors">
                                 <i class="fa-solid fa-chevron-right text-sm"></i>
@@ -344,7 +344,8 @@
             const countdownEl = document.getElementById('modal-countdown');
             const dateStrEl = document.getElementById('unlock-date-str');
 
-            const options = { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true };
+            // Format includes full day of the week (e.g. "Friday, September 11 at 12:00 AM")
+            const options = { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true };
             dateStrEl.textContent = targetTime.toLocaleString('en-US', options);
 
             modal.classList.remove('hidden-view');
