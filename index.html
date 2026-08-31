@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open When... Letters For You</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Solid plain cream background with no gradients */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FAF4E8;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .cursive {
+            font-family: 'Great Vibes', cursive;
+        }
+        
+        h1, h2, .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Solid Cream Card with pastel pink/red border and clean shadow */
+        .solid-card {
+            background-color: #FFFDF9;
+            border: 1px solid #FCE7F3;
+            box-shadow: 0 12px 32px rgba(239, 68, 68, 0.08);
+        }
+
+        .hover-lift {
+            transition: all 0.25s ease-in-out;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(244, 114, 182, 0.15);
+            border-color: #FBCFE8;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden-view {
+            display: none !important;
+        }
+
+        /* Continuous floating background heart particles */
+        .heart-bg {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation-name: floatHeart;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            will-change: transform, opacity;
+        }
+
+        @keyframes floatHeart {
+            0% { 
+                transform: translateY(105vh) rotate(0deg) scale(0.7); 
+                opacity: 0; 
+            }
+            15% { 
+                opacity: 0.85; 
+            }
+            85% { 
+                opacity: 0.85; 
+            }
+            100% { 
+                transform: translateY(-15vh) rotate(360deg) scale(1.2); 
+                opacity: 0; 
+            }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4 sm:p-8 antialiased text-gray-800 relative min-h-screen">
+
+    <!-- Floating Background Hearts with pastel red and pastel pink colors -->
+    <i class="fa-solid fa-heart heart-bg text-3xl !text-[#FFB3B3]" style="left: 5%; animation-duration: 22s; animation-delay: -3s;"></i>
+    <i class="fa-solid fa-heart heart-bg text-2xl !text-[#FFC0CB]" style="left: 15%; animation-duration: 27s; animation-delay: -11s;"></i>
+    <i class="fa-solid fa-heart heart-bg text-4xl !text-[#FFA8A8]" style="left: 28%; animation-duration: 19s; animation-delay: -1s;"></i>
+    <i class="fa-solid fa-heart heart-bg text-xl !text-[#FFB6C1]" style="left: 40%; animation-duration: 25s; animation-delay: -15s;"></i>
+    <i class="fa-solid fa-heart heart-bg text-3xl !text-[#FF9E9E]" style="left: 52%; animation-duration: 23s; animation-delay: -7s;"></i>
+    <i class="fa-solid fa-heart heart-bg text-2xl !text-[#FFD1DC]" style="left: 66%; animation-duration: 28s; animation-delay: -19s;"></i>
+    <i class="fa-solid fa-heart heart-bg text-4xl !text-[#FF9999]" style="left: 78%; animation-duration: 20s; animation-delay: -5s;"></i>
+    <i class="fa-solid fa-heart heart-bg text-2xl !text-[#F8BBD0]" style="left: 88%; animation-duration: 26s; animation-delay: -13s;"></i>
+    <i class="fa-solid fa-heart heart-bg text-3xl !text-[#FFA0A0]" style="left: 96%; animation-duration: 21s; animation-delay: -9s;"></i>
+
+    <!-- MAIN ENVELOPES MENU VIEW -->
+    <div id="menu-view" class="solid-card max-w-2xl w-full rounded-3xl p-6 sm:p-12 relative overflow-hidden fade-in z-10 my-auto">
+        
+        <!-- Header -->
+        <div class="text-center relative z-10 mb-8">
+            <!-- Top Circle Photo / Icon: Place an image named 'us.jpg' in your folder -->
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-[#FFF0F3] mb-4 text-[#F43F5E] text-3xl border-2 border-[#FFE4E6] shadow-sm overflow-hidden relative">
+                <img id="header-avatar" src="us.jpg" alt="Us" class="w-full h-full object-cover rounded-full" onerror="this.classList.add('hidden'); document.getElementById('header-icon').classList.remove('hidden');">
+                <div id="header-icon" class="hidden">
+                    <i class="fa-solid fa-envelope-open-heart"></i>
+                </div>
+            </div>
+            <span class="block text-2xl sm:text-3xl text-[#E11D48] cursive mb-1">With all my love</span>
+            <h1 class="text-4xl sm:text-5xl font-semibold text-gray-900 mb-3 tracking-tight">
+                Open When...
+            </h1>
+            <p class="text-sm sm:text-base text-gray-600 max-w-md mx-auto">
+                Special letters and voice notes left here just for you. Choose an envelope whenever you need me.
+            </p>
+        </div>
+
+        <!-- Buttons Container -->
+        <div id="buttons-container" class="space-y-4 relative z-10">
+            <!-- Dynamically populated buttons -->
+        </div>
+
+        <p class="text-center text-xs text-gray-500 mt-8">
+            <i class="fa-solid fa-lock text-[#F43F5E] mr-1"></i> Sealed until September 10th at 12:00 AM
+        </p>
+    </div>
+
+    <!-- LETTER CONTENT VIEW -->
+    <div id="letter-view" class="hidden-view solid-card max-w-2xl w-full rounded-3xl p-6 sm:p-10 relative overflow-hidden fade-in z-10 my-auto">
+        
+        <!-- Navigation / Header inside letter view -->
+        <div class="flex items-center justify-between mb-6 border-b border-[#FFE4E6] pb-4">
+            <button onclick="closeLetter()" class="group inline-flex items-center text-gray-600 hover:text-[#F43F5E] transition-colors duration-200">
+                <div class="w-9 h-9 rounded-full bg-[#FFF0F3] flex items-center justify-center mr-2 shadow-sm group-hover:-translate-x-1 transition-all border border-[#FFE4E6]">
+                    <i class="fa-solid fa-arrow-left text-[#F43F5E]"></i>
+                </div>
+                <span class="font-medium text-sm sm:text-base">Back to letters</span>
+            </button>
+
+            <!-- Download Button -->
+            <a id="download-btn" href="#" download="Letter_Image.jpg" target="_blank" class="inline-flex items-center space-x-2 px-4 py-2 bg-[#F43F5E] text-white rounded-full text-sm font-medium shadow-sm hover:bg-[#E11D48] transition-all duration-200">
+                <i class="fa-solid fa-download"></i>
+                <span>Download Letter</span>
+            </a>
+        </div>
+
+        <!-- Letter Body -->
+        <div class="flex flex-col items-center text-center">
+            <h2 id="dynamic-title" class="text-2xl sm:text-3xl font-semibold text-gray-900 mb-6 playfair text-[#9F1239]">Open when...</h2>
+            
+            <!-- Letter Image Container -->
+            <div class="w-full bg-[#FAF4E8] p-3 sm:p-4 rounded-2xl border border-[#FFE4E6] mb-6">
+                <img id="dynamic-image" src="" alt="Handwritten Letter" class="w-full h-auto rounded-xl max-h-[60vh] object-contain mx-auto shadow-sm" onerror="handleImageError(this)">
+            </div>
+
+            <!-- Audio Player Block -->
+            <div class="w-full bg-[#FFF0F3] p-4 rounded-2xl border border-[#FFE4E6] flex flex-col items-center">
+                <p class="text-sm text-[#BE123C] mb-3 font-medium flex items-center">
+                    <i class="fa-solid fa-volume-high text-[#F43F5E] mr-2 animate-pulse"></i> Listen along while reading
+                </p>
+                <audio id="dynamic-audio" controls class="w-full max-w-md outline-none">
+                    <source src="" type="audio/mp4">
+                    Your browser does not support audio playback.
+                </audio>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOCKED MODAL POPUP -->
+    <div id="locked-modal" class="hidden-view fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50 fade-in">
+        <div class="solid-card bg-[#FFFDF9] max-w-md w-full rounded-3xl p-6 sm:p-8 text-center relative border border-[#FECDD3] shadow-xl">
+            <div class="w-16 h-16 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center text-2xl mx-auto mb-4 border border-[#FFE4E6]">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2 playfair">Sealed with Love!</h3>
+            <p class="text-sm text-gray-600 mb-4">
+                This letter is strictly locked until <br>
+                <span class="font-semibold text-[#E11D48]" id="unlock-date-str">September 10 at 12:00 AM</span>.
+            </p>
+            
+            <!-- Live Countdown Box inside modal -->
+            <div class="bg-[#FFF0F3] p-4 rounded-2xl border border-[#FFE4E6] mb-6">
+                <p class="text-xs uppercase text-[#F43F5E] font-semibold tracking-wider mb-2">Time Remaining</p>
+                <div id="modal-countdown" class="text-xl sm:text-2xl font-bold text-[#BE123C] tracking-wider font-mono">
+                    00d 00h 00m 00s
+                </div>
+            </div>
+
+            <button onclick="closeModal()" class="w-full py-3 bg-[#F43F5E] hover:bg-[#E11D48] text-white rounded-full font-medium transition-colors shadow-sm">
+                Got it, I'll wait! 💕
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer by Leo Villeda -->
+    <footer class="mt-auto pt-8 pb-2 relative z-10 text-center w-full">
+        <p class="text-gray-500 text-sm font-medium tracking-wide">
+            Made with <i class="fa-solid fa-heart text-[#F43F5E] mx-1 animate-pulse"></i> by leo villeda
+        </p>
+    </footer>
+
+    <script>
+        /* * ==========================================
+         * CONFIGURATION & DATA
+         * ==========================================
+         */
+        
+        // Default unlock time: September 10, 2026 at 12:00:00 AM
+        const DEFAULT_UNLOCK_DATE = "2026-09-10T00:00:00";
+
+        /*
+         * YOUR LETTERS LIST:
+         * Ensure image and audio filenames match your files in GitHub!
+         */
+        const lettersData = [
+            {
+                id: 'miss-me',
+                title: "Read if you miss me",
+                subtitle: "I miss you so much too!",
+                icon: "fa-heart",
+                iconColor: "text-[#F43F5E]",
+                bgColor: "bg-[#FFF0F3]",
+                unlockDate: DEFAULT_UNLOCK_DATE,
+                image: "WIN_20260830_21_49_32_Scan.jpg",
+                audio: "jai letter-miss me.m4a"
+            },
+            {
+                id: 'waking-up',
+                title: "Read if you're waking up",
+                subtitle: "Good morning, my love!",
+                icon: "fa-sun",
+                iconColor: "text-[#FB923C]",
+                bgColor: "bg-[#FFF7ED]",
+                unlockDate: DEFAULT_UNLOCK_DATE,
+                image: "waking-up.jpg",
+                audio: "waking-up.m4a"
+            },
+            {
+                id: 'hard-day',
+                title: "Read if you had a hard day",
+                subtitle: "I'm right here to comfort you",
+                icon: "fa-cloud-rain",
+                iconColor: "text-[#F472B6]",
+                bgColor: "bg-[#FDF2F8]",
+                unlockDate: DEFAULT_UNLOCK_DATE,
+                image: "hard-day.jpg",
+                audio: "hard-day.m4a"
+            },
+            {
+                id: 'going-to-sleep',
+                title: "Read if you're going to sleep",
+                subtitle: "Sweet dreams, my love",
+                icon: "fa-moon",
+                iconColor: "text-[#E11D48]",
+                bgColor: "bg-[#FFF0F3]",
+                unlockDate: DEFAULT_UNLOCK_DATE,
+                image: "going-to-sleep.jpg",
+                audio: "going-to-sleep.m4a"
+            }
+        ];
+
+        /* * ==========================================
+         * APPLICATION LOGIC
+         * ==========================================
+         */
+        let countdownInterval = null;
+
+        function handleImageError(imgEl) {
+            imgEl.onerror = null;
+            imgEl.src = "https://placehold.co/600x850/FAF4E8/9F1239?text=READ+IF+YOU+MISS+ME%0A%0AHey+Jaiiii!+I+hope+you're+doing+amazing...%0A(Your+scanned+letter+image+will+show+here%0Awhen+files+are+placed+in+your+desktop+folder!)";
+        }
+
+        function renderButtons() {
+            const container = document.getElementById('buttons-container');
+            container.innerHTML = '';
+
+            const now = new Date();
+
+            lettersData.forEach(letter => {
+                const targetTime = new Date(letter.unlockDate);
+                const isLocked = now < targetTime;
+
+                const btn = document.createElement('button');
+                btn.className = `hover-lift flex items-center justify-between w-full p-5 bg-[#FFFDF9] rounded-2xl border border-[#FFE4E6] group cursor-pointer text-left shadow-sm hover:border-[#FBCFE8] transition-all`;
+                btn.onclick = () => handleButtonClick(letter);
+
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full ${letter.bgColor} flex items-center justify-center ${letter.iconColor} group-hover:scale-110 transition-transform duration-200">
+                            <i class="fa-solid ${letter.icon} text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900">${letter.title}</h3>
+                            <p class="text-sm text-gray-500">${letter.subtitle}</p>
+                        </div>
+                    </div>
+                    <div>
+                        ${isLocked ? 
+                            `<span class="inline-flex items-center px-3 py-1 bg-[#FFF0F3] text-[#F43F5E] rounded-full text-xs font-semibold border border-[#FFE4E6] space-x-1">
+                                <i class="fa-solid fa-lock text-xs"></i> <span>Sept 10</span>
+                             </span>` : 
+                            `<div class="w-9 h-9 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center group-hover:bg-[#F43F5E] group-hover:text-white transition-colors">
+                                <i class="fa-solid fa-chevron-right text-sm"></i>
+                             </div>`
+                        }
+                    </div>
+                `;
+
+                container.appendChild(btn);
+            });
+        }
+
+        function handleButtonClick(letter) {
+            const now = new Date();
+            const targetTime = new Date(letter.unlockDate);
+
+            if (now < targetTime) {
+                showLockedModal(targetTime);
+            } else {
+                openLetter(letter);
+            }
+        }
+
+        function showLockedModal(targetTime) {
+            const modal = document.getElementById('locked-modal');
+            const countdownEl = document.getElementById('modal-countdown');
+            const dateStrEl = document.getElementById('unlock-date-str');
+
+            const options = { month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true };
+            dateStrEl.textContent = targetTime.toLocaleString('en-US', options);
+
+            modal.classList.remove('hidden-view');
+
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            function updateCountdown() {
+                const now = new Date();
+                const diff = targetTime - now;
+
+                if (diff <= 0) {
+                    clearInterval(countdownInterval);
+                    modal.classList.add('hidden-view');
+                    renderButtons();
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diff / (1000 * 60)) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
+
+                countdownEl.textContent = `${days}d ${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+            }
+
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
+        function closeModal() {
+            document.getElementById('locked-modal').classList.add('hidden-view');
+            if (countdownInterval) clearInterval(countdownInterval);
+        }
+
+        function openLetter(letter) {
+            const menuView = document.getElementById('menu-view');
+            const letterView = document.getElementById('letter-view');
+            
+            const titleEl = document.getElementById('dynamic-title');
+            const imageEl = document.getElementById('dynamic-image');
+            const audioEl = document.getElementById('dynamic-audio');
+            const audioSourceEl = audioEl.querySelector('source');
+            const downloadBtn = document.getElementById('download-btn');
+
+            titleEl.textContent = letter.title;
+            imageEl.src = letter.image;
+            audioSourceEl.src = letter.audio;
+            
+            downloadBtn.href = letter.image;
+            downloadBtn.download = `Letter_${letter.id}.jpg`;
+
+            audioEl.load();
+
+            menuView.classList.add('hidden-view');
+            letterView.classList.remove('hidden-view');
+        }
+
+        function closeLetter() {
+            const audioEl = document.getElementById('dynamic-audio');
+            audioEl.pause();
+            audioEl.currentTime = 0;
+
+            document.getElementById('letter-view').classList.add('hidden-view');
+            document.getElementById('menu-view').classList.remove('hidden-view');
+        }
+
+        renderButtons();
+    </script>
+</body>
+</html>
