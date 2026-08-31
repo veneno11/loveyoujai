@@ -199,15 +199,22 @@
                 <img id="dynamic-image" src="" alt="Handwritten Letter" class="w-full h-auto rounded-xl max-h-[85vh] object-contain mx-auto shadow-sm" onerror="handleImageError(this)">
             </div>
 
-            <!-- Audio Player Block -->
-            <div class="w-full bg-[#FFF0F3] p-4 rounded-2xl border border-[#FFE4E6] flex flex-col items-center">
-                <p class="text-sm text-[#BE123C] mb-3 font-medium flex items-center">
-                    <i class="fa-solid fa-volume-high text-[#F43F5E] mr-2 animate-pulse"></i> Listen along while reading
-                </p>
-                <audio id="dynamic-audio" controls class="w-full max-w-md outline-none">
-                    <source src="" type="audio/mp4">
-                    Your browser does not support audio playback.
-                </audio>
+            <!-- Audio Player Block with Seamless Avatar Integration -->
+            <div class="w-full bg-[#FFF0F3] p-4 sm:p-5 rounded-2xl border border-[#FFE4E6] flex flex-col sm:flex-row items-center gap-4">
+                <!-- Leo's Avatar Photo next to voice note -->
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white flex-shrink-0 overflow-hidden border-2 border-[#F43F5E]/30 shadow-sm relative flex items-center justify-center">
+                    <img id="dynamic-avatar" src="" alt="Leo" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/150x150/FFF0F3/F43F5E?text=Leo';">
+                </div>
+                
+                <div class="flex-1 w-full text-center sm:text-left">
+                    <p class="text-sm text-[#BE123C] mb-2 font-medium flex items-center justify-center sm:justify-start">
+                        <i class="fa-solid fa-volume-high text-[#F43F5E] mr-2 animate-pulse"></i> Listen along while reading
+                    </p>
+                    <audio id="dynamic-audio" controls class="w-full outline-none">
+                        <source src="" type="audio/mp4">
+                        Your browser does not support audio playback.
+                    </audio>
+                </div>
             </div>
         </div>
     </div>
@@ -266,7 +273,8 @@
                 unlockDate: "2020-01-01T00:00:00", // CHANGED TO PAST DATE FOR TESTING
                 badgeText: "Sept 11",
                 image: "missme.jpg",
-                audio: "missme.m4a"
+                audio: "missme.m4a",
+                avatar: "leoday1.jpg"
             },
             {
                 id: 'waking-up',
@@ -278,7 +286,8 @@
                 unlockDate: "2020-01-01T00:00:00", // CHANGED TO PAST DATE FOR TESTING
                 badgeText: "Sept 12",
                 image: "waking-up.jpg",
-                audio: "waking-up.m4a"
+                audio: "waking-up.m4a",
+                avatar: "leoday2.jpg"
             },
             {
                 id: 'hard-day',
@@ -290,7 +299,8 @@
                 unlockDate: "2020-01-01T00:00:00", // CHANGED TO PAST DATE FOR TESTING
                 badgeText: "Sept 13",
                 image: "hard-day.jpg",
-                audio: "hard-day.m4a"
+                audio: "hard-day.m4a",
+                avatar: "leoday3.jpg"
             },
             {
                 id: 'going-to-sleep',
@@ -302,7 +312,8 @@
                 unlockDate: "2020-01-01T00:00:00", // CHANGED TO PAST DATE FOR TESTING
                 badgeText: "Sept 14",
                 image: "going-to-sleep.jpg",
-                audio: "going-to-sleep.m4a"
+                audio: "going-to-sleep.m4a",
+                avatar: "leoday4.jpg"
             }
         ];
 
@@ -410,12 +421,14 @@
             
             const titleEl = document.getElementById('dynamic-title');
             const imageEl = document.getElementById('dynamic-image');
+            const avatarEl = document.getElementById('dynamic-avatar');
             const audioEl = document.getElementById('dynamic-audio');
             const audioSourceEl = audioEl.querySelector('source');
             const downloadBtn = document.getElementById('download-btn');
 
             titleEl.textContent = letter.title;
             imageEl.src = letter.image;
+            avatarEl.src = letter.avatar;
             audioSourceEl.src = letter.audio;
             
             downloadBtn.href = letter.image;
