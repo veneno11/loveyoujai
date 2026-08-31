@@ -137,7 +137,7 @@
             }
         }
 
-        /* Cheat Code Animations */
+        /* Passcode Animations */
         @keyframes lock-burst {
             0% { transform: scale(1); opacity: 1; filter: blur(0px); }
             40% { transform: scale(1.1) rotate(-5deg); opacity: 1; filter: blur(0px); }
@@ -191,7 +191,7 @@
                     <i class="fa-solid fa-envelope-open-heart"></i>
                 </div>
             </div>
-            <span class="block text-lg sm:text-2xl text-[#E11D48] cursive leading-none mb-0.5">With all my love</span>
+            <span class="block text-lg sm:text-2xl text-[#E11D48] cursive leading-none mb-0.5">Con todo mi amor</span>
             <h1 class="text-2xl sm:text-4xl md:text-5xl font-semibold text-gray-900 tracking-tight leading-tight">
                 Open When...
             </h1>
@@ -253,7 +253,7 @@
                 
                 <div class="flex-1 min-w-0 text-left">
                     <p class="text-[11px] sm:text-sm text-[#BE123C] mb-0.5 sm:mb-1 font-medium flex items-center">
-                        <i class="fa-solid fa-[#F43F5E] fa-volume-high mr-1.5 animate-pulse text-[11px] sm:text-xs"></i> <span>Listen along while reading</span>
+                        <i class="fa-solid fa-volume-high text-[#F43F5E] mr-1.5 animate-pulse text-[11px] sm:text-xs"></i> <span>Listen along while reading</span>
                     </p>
                     <audio id="dynamic-audio" controls class="w-full h-7 sm:h-9 outline-none text-xs">
                         <source src="" type="audio/mp4">
@@ -270,9 +270,9 @@
             <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center text-xl sm:text-2xl mx-auto mb-3 border border-[#FFE4E6]">
                 <i class="fa-solid fa-lock"></i>
             </div>
-            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-1 playfair">Sealed with Love!</h3>
+            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-1 playfair">Sellado con Mucho Amor</h3>
             <p class="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4">
-                This letter is strictly locked until <br>
+                This letter is locked until <br>
                 <span class="font-semibold text-[#E11D48]" id="unlock-date-str">Friday, September 11 at 12:00 AM</span>.
             </p>
             
@@ -290,12 +290,12 @@
         </div>
     </div>
 
-    <!-- FLOATING SECRET CHEAT CODE BUTTON (Bottom Right) -->
-    <button onclick="openSecretModal()" class="fixed bottom-4 right-4 z-40 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#FFF0F3] text-[#F43F5E] border-2 border-[#FFE4E6] shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-200 group" title="Enter Secret Cheat Code">
+    <!-- FLOATING SECRET PASSCODE BUTTON (Bottom Right) -->
+    <button onclick="openSecretModal()" class="fixed bottom-4 right-4 z-40 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#FFF0F3] text-[#F43F5E] border-2 border-[#FFE4E6] shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-200 group" title="Enter Secret Passcode">
         <i class="fa-solid fa-key text-base sm:text-lg group-hover:rotate-12 transition-transform"></i>
     </button>
 
-    <!-- SECRET CODE MODAL POPUP -->
+    <!-- SECRET PASSCODE MODAL POPUP -->
     <div id="secret-modal" class="hidden-view fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 fade-in">
         <div class="solid-card bg-[#FFFDF9] max-w-xs sm:max-w-md w-full rounded-3xl p-5 sm:p-7 text-center relative border border-[#FECDD3] shadow-2xl">
             <button onclick="closeSecretModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 w-8 h-8 rounded-full flex items-center justify-center">
@@ -305,15 +305,15 @@
             <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center text-xl sm:text-2xl mx-auto mb-3 border border-[#FFE4E6]">
                 <i class="fa-solid fa-key"></i>
             </div>
-            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-1 playfair">Secret Cheat Code</h3>
+            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-1 playfair">Secret Passcode</h3>
             <p class="text-xs sm:text-sm text-gray-600 mb-4">
-                Enter a secret phrase or password to unlock a locked letter early! 🔑✨
+                Enter a secret phrase or passcode to unlock a locked letter early! 🔑✨
             </p>
             
             <form onsubmit="handleSecretSubmit(event)" class="space-y-3">
                 <input type="text" id="secret-input" placeholder="Type secret phrase here..." class="w-full px-4 py-2.5 rounded-full border border-[#FECDD3] bg-white text-center text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#F43F5E]/50 text-gray-800 placeholder-gray-400 shadow-inner">
                 <button type="submit" class="w-full py-2.5 bg-[#F43F5E] hover:bg-[#E11D48] text-white rounded-full text-xs sm:text-sm font-medium transition-colors shadow-sm flex items-center justify-center space-x-1.5">
-                    <span>Unlock Secret</span>
+                    <span>Unlock Letter</span>
                     <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
                 </button>
             </form>
@@ -342,7 +342,7 @@
             {
                 id: 'miss-me',
                 title: "Read if you miss me",
-                subtitle: "I miss you so much too!",
+                subtitle: "Yo tambien te extraño mi niña hermosa!",
                 icon: "fa-heart",
                 iconColor: "text-[#F43F5E]",
                 bgColor: "bg-[#FFF0F3]",
@@ -355,7 +355,7 @@
             {
                 id: 'waking-up',
                 title: "Read if you're waking up",
-                subtitle: "Good morning, my love!",
+                subtitle: "Buenos dias, mi princesa.",
                 icon: "fa-sun",
                 iconColor: "text-[#FB923C]",
                 bgColor: "bg-[#FFF7ED]",
@@ -368,7 +368,7 @@
             {
                 id: 'hard-day',
                 title: "Read if you had a hard day",
-                subtitle: "I'm right here to comfort you",
+                subtitle: "I'm right here for you, baby.",
                 icon: "fa-cloud-rain",
                 iconColor: "text-[#F472B6]",
                 bgColor: "bg-[#FDF2F8]",
@@ -381,7 +381,7 @@
             {
                 id: 'going-to-sleep',
                 title: "Read if you're going to sleep",
-                subtitle: "Sweet dreams, my love",
+                subtitle: "Feliz noches, mi amor.",
                 icon: "fa-moon",
                 iconColor: "text-[#E11D48]",
                 bgColor: "bg-[#FFF0F3]",
@@ -394,10 +394,10 @@
         ];
 
         /*
-         * SECRET CHEAT CODES MAPPING:
+         * SECRET PASSCODES MAPPING:
          * Add any key-value pair here! Key is lowercase phrase, value is letter ID to unlock.
          */
-        const secretCheatCodes = {
+        const secretPasscodes = {
             'sabaidee123': 'miss-me' // Unlocks Day 1 "Read if you miss me"
         };
 
@@ -408,7 +408,7 @@
         let countdownInterval = null;
         let bannerTimerInterval = null;
         let isDemoMode = false;
-        const unlockedSecretIds = new Set(); // Stores letter IDs unlocked via cheat codes
+        const unlockedSecretIds = new Set(); // Stores letter IDs unlocked via passcodes
 
         function isLetterUnlocked(letter) {
             if (isDemoMode) return true;
@@ -476,7 +476,7 @@
                         <div class="truncate">
                             <h3 class="text-xs sm:text-base font-medium text-gray-900 truncate flex items-center">
                                 <span>${letter.title}</span>
-                                ${isSecretUnlocked ? `<i class="fa-solid fa-key text-[10px] text-[#F43F5E] ml-1.5" title="Unlocked with Secret Code"></i>` : ''}
+                                ${isSecretUnlocked ? `<i class="fa-solid fa-key text-[10px] text-[#F43F5E] ml-1.5" title="Unlocked with Secret Passcode"></i>` : ''}
                             </h3>
                             <p class="text-[10px] sm:text-xs md:text-sm text-gray-500 truncate">${letter.subtitle}</p>
                         </div>
@@ -589,7 +589,7 @@
         }
 
         /* * ==========================================
-         * SECRET CHEAT CODE MODAL LOGIC
+         * SECRET PASSCODE MODAL LOGIC
          * ==========================================
          */
         function openSecretModal() {
@@ -639,13 +639,13 @@
 
             if (!phrase) return;
 
-            const targetLetterId = secretCheatCodes[phrase];
+            const targetLetterId = secretPasscodes[phrase];
 
             if (targetLetterId) {
                 const targetLetter = lettersData.find(l => l.id === targetLetterId);
                 
                 feedbackEl.className = "text-xs font-semibold mt-3 text-emerald-600 block";
-                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Cheat code accepted! "${targetLetter ? targetLetter.title : 'Letter'}" is unlocking... 💕`;
+                feedbackEl.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Passcode accepted! "${targetLetter ? targetLetter.title : 'Letter'}" is unlocking... 💕`;
                 
                 triggerConfetti();
 
