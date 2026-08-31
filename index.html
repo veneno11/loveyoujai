@@ -4,10 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Open When... Letters For You</title>
+    
+    <!-- Favicon: Cute heart emoji icon for browser tabs -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>">
+    
+    <!-- If you want to use a custom picture file as your favicon, uncomment the line below and upload favicon.png to GitHub: -->
+    <!-- <link rel="icon" type="image/png" href="favicon.png"> -->
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script>
+        // Define error handlers in <head> so inline img onerror attributes find them immediately
+        let avatarAttemptIndex = 0;
+        const avatarFormats = ['us.jpg', 'us.png', 'us.JPG', 'us.PNG', 'us.jpeg', 'us.JPEG'];
+
+        function handleAvatarError(imgEl) {
+            avatarAttemptIndex++;
+            if (avatarAttemptIndex < avatarFormats.length) {
+                imgEl.src = avatarFormats[avatarAttemptIndex];
+            } else {
+                imgEl.classList.add('hidden');
+                const headerIcon = document.getElementById('header-icon');
+                if (headerIcon) headerIcon.classList.remove('hidden');
+            }
+        }
+
+        function handleImageError(imgEl) {
+            imgEl.onerror = null;
+            imgEl.src = "https://placehold.co/600x850/FAF4E8/9F1239?text=READ+IF+YOU+MISS+ME%0A%0AHey+Jaiiii!+I+hope+you're+doing+amazing...%0A(Your+scanned+letter+image+will+show+here%0Awhen+files+are+placed+in+your+desktop+folder!)";
+        }
+    </script>
+
     <style>
         /* Solid plain cream background with no gradients */
         body {
@@ -277,25 +306,6 @@
          * ==========================================
          */
         let countdownInterval = null;
-
-        // Auto-detect avatar format: seamlessly checks us.jpg -> us.png -> us.JPG -> us.PNG -> us.jpeg -> icon fallback
-        let avatarAttemptIndex = 0;
-        const avatarFormats = ['us.jpg', 'us.png', 'us.JPG', 'us.PNG', 'us.jpeg', 'us.JPEG'];
-
-        function handleAvatarError(imgEl) {
-            avatarAttemptIndex++;
-            if (avatarAttemptIndex < avatarFormats.length) {
-                imgEl.src = avatarFormats[avatarAttemptIndex];
-            } else {
-                imgEl.classList.add('hidden');
-                document.getElementById('header-icon').classList.remove('hidden');
-            }
-        }
-
-        function handleImageError(imgEl) {
-            imgEl.onerror = null;
-            imgEl.src = "https://placehold.co/600x850/FAF4E8/9F1239?text=READ+IF+YOU+MISS+ME%0A%0AHey+Jaiiii!+I+hope+you're+doing+amazing...%0A(Your+scanned+letter+image+will+show+here%0Awhen+files+are+placed+in+your+desktop+folder!)";
-        }
 
         function renderButtons() {
             const container = document.getElementById('buttons-container');
