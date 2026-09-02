@@ -336,7 +336,8 @@
                 iconColor: "text-[#E11D48]",
                 bgColor: "bg-[#FFF0F3]",
                 unlockDate: "2026-09-06T00:00:00",
-                badgeText: "Sept 6",
+                badgeText: "Passcode 🔑",
+                passcodeOnly: true,
                 image: "birthday.jpg",
                 audio: "birthday.m4a"
             },
@@ -357,7 +358,7 @@
                 title: "Read if you're waking up",
                 subtitle: "Buenos dias, mi princesa.",
                 icon: "fa-sun",
-                iconColor: "text-[#FB7185]",
+                iconColor: "text-[#E11D48]",
                 bgColor: "bg-[#FFF1F2]",
                 unlockDate: "2026-09-12T00:00:00",
                 badgeText: "Sept 12",
@@ -369,7 +370,7 @@
                 title: "Read if you had a hard day",
                 subtitle: "I'm right here for you, baby.",
                 icon: "fa-cloud-rain",
-                iconColor: "text-[#E11D48]",
+                iconColor: "text-[#F43F5E]",
                 bgColor: "bg-[#FFE4E6]",
                 unlockDate: "2026-09-13T00:00:00",
                 badgeText: "Sept 13",
@@ -391,6 +392,7 @@
         ];
 
         const secretPasscodes = {
+            'teamojai': 'birthday',
             'mybirthdaybabyyy': 'birthday',
             'nochesguapaaa': 'going-to-sleep',
             'sabaidee123': 'miss-me',
@@ -492,7 +494,7 @@
         function isLetterUnlocked(letter) {
             if (isDemoMode) return true;
             if (unlockedSecretIds.has(letter.id)) return true;
-            if (letter.permanentlyLocked) return false;
+            if (letter.passcodeOnly || letter.permanentlyLocked) return false;
             return new Date() >= new Date(letter.unlockDate);
         }
 
@@ -598,7 +600,7 @@
             }
 
             const now = new Date();
-            const nextLocked = lettersData.find(l => !isLetterUnlocked(l) && !l.permanentlyLocked);
+            const nextLocked = lettersData.find(l => !isLetterUnlocked(l) && !l.passcodeOnly && !l.permanentlyLocked);
 
             if (!nextLocked) {
                 textEl.textContent = "All Letters Unlocked! 💕";
@@ -635,7 +637,11 @@
 
         function handleButtonClick(letter) {
             if (!isLetterUnlocked(letter)) {
-                showLockedModal(new Date(letter.unlockDate));
+                if (letter.passcodeOnly) {
+                    openSecretModal();
+                } else {
+                    showLockedModal(new Date(letter.unlockDate));
+                }
             } else {
                 openLetter(letter);
             }
