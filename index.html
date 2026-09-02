@@ -149,18 +149,18 @@
         /* Passcode Animations */
         @keyframes lock-burst {
             0% { transform: scale(1); opacity: 1; filter: blur(0px); }
-            40% { transform: scale(1.1) rotate(-5deg); opacity: 1; filter: blur(0px); }
-            100% { transform: scale(1.6) rotate(15deg); opacity: 0; filter: blur(4px); }
+            40% { transform: scale(1.05) rotate(-5deg); opacity: 1; filter: blur(0px); }
+            100% { transform: scale(1.3) rotate(12deg); opacity: 0; filter: blur(3px); }
         }
         @keyframes arrow-pop-in {
             0% { transform: scale(0) rotate(-90deg); opacity: 0; }
             45% { transform: scale(0) rotate(-90deg); opacity: 0; }
-            75% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+            75% { transform: scale(1.1) rotate(10deg); opacity: 1; }
             100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
         @keyframes border-glow {
             0% { border-color: #FFE4E6; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
-            30% { border-color: #F43F5E; box-shadow: 0 0 20px rgba(244, 63, 94, 0.35); transform: scale(1.02); }
+            30% { border-color: #F43F5E; box-shadow: 0 0 14px rgba(244, 63, 94, 0.35); transform: scale(1.01); }
             100% { border-color: #FFE4E6; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); transform: scale(1); }
         }
         .animate-lock-burst { animation: lock-burst 0.6s ease-in forwards; }
@@ -209,7 +209,7 @@
         </div>
 
         <!-- Buttons Grid Container -->
-        <div id="buttons-container" class="grid grid-cols-1 gap-2 sm:gap-3.5 relative z-10 flex-1 sm:flex-initial min-h-0 justify-center my-1 sm:my-3 overflow-hidden">
+        <div id="buttons-container" class="grid grid-cols-1 gap-2 sm:gap-3.5 relative z-10 flex-1 sm:flex-initial min-h-0 justify-center my-1 sm:my-3 p-1 -m-1 overflow-visible">
             <!-- Dynamically populated buttons -->
         </div>
 
@@ -440,6 +440,7 @@
                 const isNewlyUnlocked = (letter.id === newlyUnlockedId);
 
                 const btn = document.createElement('button');
+                btn.setAttribute('data-letter-id', letter.id);
                 let btnClasses = `hover-lift flex items-center justify-between w-full p-2.5 sm:p-4 bg-[#FFFDF9] rounded-xl sm:rounded-2xl border border-[#FFE4E6] group cursor-pointer text-left shadow-sm hover:border-[#FBCFE8] transition-all relative`;
                 
                 if (isNewlyUnlocked) {
@@ -498,6 +499,16 @@
             });
 
             updateBannerTimer();
+
+            // Auto-scroll smooth animation target into view if newly unlocked
+            if (newlyUnlockedId) {
+                const newlyUnlockedBtn = container.querySelector(`[data-letter-id="${newlyUnlockedId}"]`);
+                if (newlyUnlockedBtn) {
+                    setTimeout(() => {
+                        newlyUnlockedBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 200);
+                }
+            }
         }
 
         function updateBannerTimer() {
