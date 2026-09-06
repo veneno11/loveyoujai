@@ -54,9 +54,10 @@
 
         function handleImageError(imgEl) {
             imgEl.onerror = null;
-            const currentTitle = document.getElementById('dynamic-title')?.textContent || "OPEN WHEN...";
+            const titleEl = document.getElementById('dynamic-title');
+            const currentTitle = titleEl ? titleEl.textContent : "OPEN WHEN...";
             const titleEncoded = encodeURIComponent(currentTitle.toUpperCase());
-            imgEl.src = `https://placehold.co/600x850/FAF4E8/9F1239?text=${titleEncoded}%0A%0AHey+Jaiiii!+I+hope+you're+doing+amazing...%0A(Your+scanned+letter+image+will+show+here%0Awhen+files+are+placed+in+your+desktop+folder!)`;
+            imgEl.src = "https://placehold.co/600x850/FAF4E8/9F1239?text=" + titleEncoded + "%0A%0AHey+Jaiiii!+I+hope+you're+doing+amazing...%0A(Your+scanned+letter+image+will+show+here%0Awhen+files+are+placed+in+your+desktop+folder!)";
         }
     </script>
 
@@ -171,6 +172,7 @@
 </head>
 <body class="flex flex-col items-center justify-between p-3 sm:p-6 md:p-8 antialiased text-gray-800 relative min-h-screen max-w-full overflow-x-hidden select-none">
 
+    <!-- Floating heart background elements -->
     <i class="fa-solid fa-heart heart-bg text-3xl !text-[#FFB3B3]" style="left: 5%; animation-duration: 22s; animation-delay: -3s;"></i>
     <i class="fa-solid fa-heart heart-bg text-2xl !text-[#FFC0CB]" style="left: 15%; animation-duration: 27s; animation-delay: -11s;"></i>
     <i class="fa-solid fa-heart heart-bg text-4xl !text-[#FFA8A8]" style="left: 28%; animation-duration: 19s; animation-delay: -1s;"></i>
@@ -316,14 +318,11 @@
         </div>
     </div>
 
+    <!-- Clean Footer without testing mode toggle -->
     <footer class="mt-2 sm:mt-6 pt-1 pb-1 relative z-10 text-center shrink-0 w-full">
         <p class="text-gray-500 text-[11px] sm:text-sm font-medium tracking-wide mb-1">
             Made with <i class="fa-solid fa-heart text-[#F43F5E] mx-0.5 animate-pulse"></i> by leo villeda
         </p>
-        <div class="inline-flex items-center space-x-1.5 text-[10px] sm:text-xs text-gray-500 bg-white/80 px-3 py-1 rounded-full border border-gray-200 shadow-sm">
-            <input type="checkbox" id="demo-mode-toggle" class="rounded text-[#F43F5E] focus:ring-[#F43F5E] cursor-pointer w-3.5 h-3.5" onchange="toggleDemoMode(this.checked)">
-            <label for="demo-mode-toggle" class="cursor-pointer select-none">Testing Mode (Unlock All Letters)</label>
-        </div>
     </footer>
 
     <script>
@@ -408,7 +407,7 @@
             return confettiInstance || confetti;
         }
 
-        function triggerSpecialConfetti(isBirthday = false) {
+        function triggerSpecialConfetti(isBirthday) {
             if (typeof confetti !== 'function') return;
             const fire = getConfettiInstance();
 
@@ -432,7 +431,7 @@
             const duration = isBirthday ? 1200 : 500;
             const end = Date.now() + duration;
 
-            const interval = setInterval(() => {
+            const interval = setInterval(function() {
                 if (Date.now() > end) {
                     clearInterval(interval);
                     return;
@@ -462,10 +461,10 @@
 
         let countdownInterval = null;
         let bannerTimerInterval = null;
-        let isDemoMode = false;
         const unlockedSecretIds = new Set();
 
-        function smoothScrollTo(targetY, duration = 1000) {
+        function smoothScrollTo(targetY, duration) {
+            if (!duration) duration = 1000;
             const startY = window.pageYOffset || document.documentElement.scrollTop;
             const distance = targetY - startY;
             let startTime = null;
@@ -490,82 +489,67 @@
         }
 
         function isLetterUnlocked(letter) {
-            if (isDemoMode) return true;
             if (unlockedSecretIds.has(letter.id)) return true;
             if (letter.passcodeOnly || letter.permanentlyLocked) return false;
             return new Date() >= new Date(letter.unlockDate);
         }
 
-        function toggleDemoMode(enabled) {
-            isDemoMode = enabled;
-            renderButtons();
-            updateBannerTimer();
-        }
-
-        function renderButtons(newlyUnlockedId = null) {
+        function renderButtons(newlyUnlockedId) {
             const container = document.getElementById('buttons-container');
             container.innerHTML = '';
 
-            lettersData.forEach(letter => {
+            lettersData.forEach(function(letter) {
                 const isUnlocked = isLetterUnlocked(letter);
                 const isSecretUnlocked = unlockedSecretIds.has(letter.id) && (new Date() < new Date(letter.unlockDate));
                 const isNewlyUnlocked = (letter.id === newlyUnlockedId);
 
                 const btn = document.createElement('button');
                 btn.setAttribute('data-letter-id', letter.id);
-                let btnClasses = `hover-lift flex items-center justify-between w-full p-2.5 sm:p-4 bg-[#FFFDF9] rounded-xl sm:rounded-2xl border border-[#FFE4E6] group cursor-pointer text-left shadow-sm hover:border-[#FBCFE8] transition-all relative`;
+                let btnClasses = "hover-lift flex items-center justify-between w-full p-2.5 sm:p-4 bg-[#FFFDF9] rounded-xl sm:rounded-2xl border border-[#FFE4E6] group cursor-pointer text-left shadow-sm hover:border-[#FBCFE8] transition-all relative";
                 
                 if (isNewlyUnlocked) {
-                    btnClasses += ` animate-border-glow`;
+                    btnClasses += " animate-border-glow";
                 }
                 
                 btn.className = btnClasses;
-                btn.onclick = () => handleButtonClick(letter);
+                btn.onclick = function() { handleButtonClick(letter); };
 
                 let statusHtml = '';
                 
                 if (!isUnlocked && !isNewlyUnlocked) {
-                    statusHtml = `
-                        <span class="inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 bg-[#FFF0F3] text-[#F43F5E] rounded-full text-[10px] sm:text-xs font-semibold border border-[#FFE4E6] space-x-1 shrink-0">
-                            <i class="fa-solid fa-lock text-[9px] sm:text-xs mr-0.5"></i> <span>${letter.badgeText}</span>
-                        </span>
-                    `;
+                    statusHtml = '<span class="inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 bg-[#FFF0F3] text-[#F43F5E] rounded-full text-[10px] sm:text-xs font-semibold border border-[#FFE4E6] space-x-1 shrink-0">' +
+                        '<i class="fa-solid fa-lock text-[9px] sm:text-xs mr-0.5"></i> <span>' + letter.badgeText + '</span>' +
+                        '</span>';
                 } else if (isNewlyUnlocked) {
-                    statusHtml = `
-                        <div class="relative w-16 sm:w-20 h-7 sm:h-9 flex items-center justify-end shrink-0">
-                            <span class="absolute inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 bg-[#FFF0F3] text-[#F43F5E] rounded-full text-[10px] sm:text-xs font-semibold border border-[#FFE4E6] space-x-1 animate-lock-burst whitespace-nowrap right-0">
-                                <i class="fa-solid fa-lock text-[9px] sm:text-xs mr-0.5"></i> <span>${letter.badgeText}</span>
-                            </span>
-                            <div class="absolute w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center animate-arrow-pop-in right-0 shadow-sm border border-[#FFE4E6]">
-                                <i class="fa-solid fa-chevron-right text-xs sm:text-sm"></i>
-                            </div>
-                        </div>
-                    `;
+                    statusHtml = '<div class="relative w-16 sm:w-20 h-7 sm:h-9 flex items-center justify-end shrink-0">' +
+                        '<span class="absolute inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 bg-[#FFF0F3] text-[#F43F5E] rounded-full text-[10px] sm:text-xs font-semibold border border-[#FFE4E6] space-x-1 animate-lock-burst whitespace-nowrap right-0">' +
+                        '<i class="fa-solid fa-lock text-[9px] sm:text-xs mr-0.5"></i> <span>' + letter.badgeText + '</span>' +
+                        '</span>' +
+                        '<div class="absolute w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center animate-arrow-pop-in right-0 shadow-sm border border-[#FFE4E6]">' +
+                        '<i class="fa-solid fa-chevron-right text-xs sm:text-sm"></i>' +
+                        '</div>' +
+                        '</div>';
                 } else {
-                    statusHtml = `
-                        <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center group-hover:bg-[#F43F5E] group-hover:text-white transition-colors shrink-0">
-                            <i class="fa-solid fa-chevron-right text-xs sm:text-sm"></i>
-                        </div>
-                    `;
+                    statusHtml = '<div class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#FFF0F3] text-[#F43F5E] flex items-center justify-center group-hover:bg-[#F43F5E] group-hover:text-white transition-colors shrink-0">' +
+                        '<i class="fa-solid fa-chevron-right text-xs sm:text-sm"></i>' +
+                        '</div>';
                 }
 
-                btn.innerHTML = `
-                    <div class="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1 pr-2">
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 aspect-square rounded-full ${letter.bgColor} flex items-center justify-center ${letter.iconColor} shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-[#FFE4E6]">
-                            <i class="fa-solid ${letter.icon} text-lg sm:text-xl"></i>
-                        </div>
-                        <div class="text-left flex-1 min-w-0 py-0.5">
-                            <h3 class="text-sm sm:text-base font-semibold text-gray-900 flex items-center flex-wrap leading-snug">
-                                <span class="mr-1.5">${letter.title}</span>
-                                ${isSecretUnlocked ? `<i class="fa-solid fa-key text-[10px] text-[#F43F5E]" title="Unlocked with Secret Passcode"></i>` : ''}
-                            </h3>
-                            <p class="text-[11px] sm:text-xs text-gray-500 leading-normal mt-0.5 break-words">${letter.subtitle}</p>
-                        </div>
-                    </div>
-                    <div class="shrink-0 flex items-center justify-end">
-                        ${statusHtml}
-                    </div>
-                `;
+                btn.innerHTML = '<div class="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1 pr-2">' +
+                    '<div class="w-10 h-10 sm:w-12 sm:h-12 aspect-square rounded-full ' + letter.bgColor + ' flex items-center justify-center ' + letter.iconColor + ' shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-sm border border-[#FFE4E6]">' +
+                    '<i class="fa-solid ' + letter.icon + ' text-lg sm:text-xl"></i>' +
+                    '</div>' +
+                    '<div class="text-left flex-1 min-w-0 py-0.5">' +
+                    '<h3 class="text-sm sm:text-base font-semibold text-gray-900 flex items-center flex-wrap leading-snug">' +
+                    '<span class="mr-1.5">' + letter.title + '</span>' +
+                    (isSecretUnlocked ? '<i class="fa-solid fa-key text-[10px] text-[#F43F5E]" title="Unlocked with Secret Passcode"></i>' : '') +
+                    '</h3>' +
+                    '<p class="text-[11px] sm:text-xs text-gray-500 leading-normal mt-0.5 break-words">' + letter.subtitle + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="shrink-0 flex items-center justify-end">' +
+                    statusHtml +
+                    '</div>';
 
                 container.appendChild(btn);
             });
@@ -573,9 +557,9 @@
             updateBannerTimer();
 
             if (newlyUnlockedId) {
-                const newlyUnlockedBtn = container.querySelector(`[data-letter-id="${newlyUnlockedId}"]`);
+                const newlyUnlockedBtn = container.querySelector('[data-letter-id="' + newlyUnlockedId + '"]');
                 if (newlyUnlockedBtn) {
-                    setTimeout(() => {
+                    setTimeout(function() {
                         const rect = newlyUnlockedBtn.getBoundingClientRect();
                         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                         const targetY = Math.max(0, rect.top + scrollTop - (window.innerHeight * 0.35));
@@ -592,13 +576,9 @@
             const timerEl = document.getElementById('next-unlock-timer');
             const textEl = document.getElementById('next-unlock-text');
 
-            if (isDemoMode) {
-                bannerEl.classList.add('hidden-view');
-                return;
-            }
-
-            const now = new Date();
-            const nextLocked = lettersData.find(l => !isLetterUnlocked(l) && !l.passcodeOnly && !l.permanentlyLocked);
+            const nextLocked = lettersData.find(function(l) { 
+                return !isLetterUnlocked(l) && !l.passcodeOnly && !l.permanentlyLocked; 
+            });
 
             if (!nextLocked) {
                 textEl.textContent = "All Letters Unlocked! 💕";
@@ -608,7 +588,7 @@
             }
 
             bannerEl.classList.remove('hidden-view');
-            textEl.textContent = `Next letter unlocks on ${nextLocked.badgeText} in`;
+            textEl.textContent = "Next letter unlocks on " + nextLocked.badgeText + " in";
 
             function tickBanner() {
                 const current = new Date();
@@ -626,7 +606,7 @@
                 const m = Math.floor((diff / (1000 * 60)) % 60);
                 const s = Math.floor((diff / 1000) % 60);
 
-                timerEl.textContent = `${d}d ${h.toString().padStart(2, '0')}h ${m.toString().padStart(2, '0')}m ${s.toString().padStart(2, '0')}s`;
+                timerEl.textContent = d + "d " + h.toString().padStart(2, '0') + "h " + m.toString().padStart(2, '0') + "m " + s.toString().padStart(2, '0') + "s";
             }
 
             tickBanner();
@@ -673,7 +653,7 @@
                 const minutes = Math.floor((diff / (1000 * 60)) % 60);
                 const seconds = Math.floor((diff / 1000) % 60);
 
-                countdownEl.textContent = `${days}d ${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+                countdownEl.textContent = days + "d " + hours.toString().padStart(2, '0') + "h " + minutes.toString().padStart(2, '0') + "m " + seconds.toString().padStart(2, '0') + "s";
             }
 
             updateCountdown();
@@ -700,16 +680,14 @@
             img.onerror = function() { handleImageError(this); };
 
             const audio = document.getElementById('dynamic-audio');
-            audio.innerHTML = `
-                <source src="${letter.audio}" type="audio/mp4">
-                <source src="${letter.audio.replace('.m4a', '.mp3')}" type="audio/mpeg">
-                Your browser does not support audio playback.
-            `;
+            audio.innerHTML = '<source src="' + letter.audio + '" type="audio/mp4">' +
+                '<source src="' + letter.audio.replace('.m4a', '.mp3') + '" type="audio/mpeg">' +
+                'Your browser does not support audio playback.';
             audio.load();
 
             const downloadBtn = document.getElementById('download-btn');
             downloadBtn.href = letter.image;
-            downloadBtn.download = `${letter.title.replace(/\s+/g, '_')}.jpg`;
+            downloadBtn.download = letter.title.replace(/\s+/g, '_') + '.jpg';
         }
 
         function closeLetter() {
@@ -761,7 +739,7 @@
                 
                 triggerSpecialConfetti(isBirthday);
 
-                setTimeout(() => {
+                setTimeout(function() {
                     closeSecretModal();
                     renderButtons(letterIdToUnlock);
                 }, isBirthday ? 1200 : 600);
@@ -772,7 +750,7 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
             getConfettiInstance();
             renderButtons();
         });
