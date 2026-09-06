@@ -253,8 +253,6 @@
                         <i class="fa-solid fa-volume-high text-[#F43F5E] mr-1.5 animate-pulse text-[11px] sm:text-xs"></i> <span>Listen along while reading</span>
                     </p>
                     <audio id="dynamic-audio" controls class="w-full h-7 sm:h-9 outline-none text-xs">
-                        <source src="" type="audio/mp4">
-                        <source src="" type="audio/mpeg">
                         Your browser does not support audio playback.
                     </audio>
                 </div>
@@ -680,9 +678,10 @@
             img.onerror = function() { handleImageError(this); };
 
             const audio = document.getElementById('dynamic-audio');
-            audio.innerHTML = '<source src="' + letter.audio + '" type="audio/mp4">' +
-                '<source src="' + letter.audio.replace('.m4a', '.mp3') + '" type="audio/mpeg">' +
-                'Your browser does not support audio playback.';
+            // Assigning src directly is much more reliable across browsers than changing innerHTML
+            // Adding a timestamp cache-buster ensures the browser fetches the file fresh and ignores broken caches
+            const cacheBuster = "?t=" + new Date().getTime();
+            audio.src = letter.audio + cacheBuster;
             audio.load();
 
             const downloadBtn = document.getElementById('download-btn');
